@@ -5,81 +5,192 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2N1 - Giả Lập Sinh Viên Chuyên Nghiệp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Tích hợp CSS nâng cấp từ bản trước */
+        /* CSS tích hợp để đảm bảo hiển thị đúng */
         :root {
             --primary-color: #4b6cb7; --secondary-color: #182848; --accent-color: #6dd5ed;
             --success-color: #28a745; --game-gold: #ffd700; --game-blue: #00d2ff;
             --light-color: #f8f9fa; --text-color: #333; --border-radius: 15px;
         }
-        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; margin: 0; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%); color: white; min-height: 100vh; margin: 0; padding-top: 50px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
         
-        /* HUD Giả lập ở góc phải */
+        /* Bảng HUD ở góc phải */
         .student-hud-container {
-            position: fixed; top: 20px; right: 20px; background: var(--secondary-color);
-            color: white; padding: 15px; border-radius: var(--border-radius);
-            border-bottom: 4px solid var(--game-blue); z-index: 1000; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            position: fixed; top: 20px; right: 20px; background: rgba(24, 40, 72, 0.9);
+            padding: 15px; border-radius: 10px; border: 2px solid var(--game-blue);
+            z-index: 1000; box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
         }
-        .gpa-badge { background: var(--game-gold); color: #000; padding: 2px 8px; border-radius: 5px; font-weight: bold; }
+        .gpa-badge { background: var(--game-gold); color: black; padding: 2px 8px; border-radius: 5px; font-weight: bold; }
 
-        /* Dashboard chính */
-        .main-header { text-align: center; color: var(--secondary-color); margin-bottom: 40px; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .main-header { text-align: center; margin-bottom: 40px; }
+        
+        /* Dashboard dạng thẻ */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
         .feature-card { 
-            background: white; padding: 30px; border-radius: var(--border-radius); text-align: center;
-            cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 15px; 
+            text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
         }
-        .feature-card:hover { transform: translateY(-10px); background: #f0f7ff; }
-        .feature-card i { font-size: 40px; color: var(--primary-color); margin-bottom: 15px; }
+        .feature-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.2); border-color: var(--game-blue); }
+        .feature-card i { font-size: 40px; color: var(--game-blue); margin-bottom: 15px; }
 
-        /* Modal & Form */
+        /* Modals */
         .modal-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; 
+            background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; 
         }
         .modal-overlay.active { display: flex; }
-        .modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; }
+        .modal-content { background: white; color: #333; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
         
-        .task-list { margin-top: 20px; background: white; padding: 20px; border-radius: 15px; }
-        .task-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
-        .notification { 
-            position: fixed; bottom: 20px; left: 20px; background: var(--secondary-color); 
-            color: white; padding: 15px; border-radius: 10px; display: none; z-index: 3000;
-        }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; }
+        .btn-main { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        
+        .task-list-area { margin-top: 40px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; }
+        .task-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .notification { position: fixed; bottom: 20px; left: 20px; background: var(--game-blue); color: #000; padding: 15px 25px; border-radius: 10px; display: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="student-hud-container" id="hud">
-        <div style="font-size: 12px; opacity: 0.8;">CHUYÊN NGÀNH: <span id="hud-major">Chưa chọn</span></div>
-        <div style="margin: 5px 0;">GPA: <span class="gpa-badge" id="hud-gpa">0.00</span></div>
-        <div style="font-size: 12px;">CẤP ĐỘ: <span id="hud-level">Tân sinh viên</span></div>
+    <div class="student-hud-container">
+        <div style="font-size: 11px;">CHUYÊN NGÀNH: <span id="hud-major" style="color: var(--game-blue);">Chưa chọn</span></div>
+        <div style="margin: 5px 0;">GPA: <span class="gpa-badge" id="hud-gpa">3.92</span></div>
+        <div style="font-size: 11px;">CẤP ĐỘ: <span id="hud-level">Tân sinh viên</span></div>
     </div>
 
     <div class="main-header">
-        <h1><i class="fas fa-clock"></i> 2N1 Productivity</h1>
-        <p>Quản lý thời gian & Giả lập sinh viên chuyên nghiệp</p>
+        <h1><i class="fas fa-bolt"></i> 2N1 Productivity</h1>
+        <p>Quản lý học tập & Giả lập sinh viên</p>
     </div>
 
     <div class="features-grid">
         <div class="feature-card" onclick="openTaskModal()">
-            <i class="fas fa-tasks"></i>
-            <h3>Quản Lý Nhiệm Vụ</h3>
-            <p>Thêm bài tập Luật, IT hoặc Kinh tế</p>
+            <i class="fas fa-list-check"></i>
+            <h3>Quản lý Nhiệm vụ</h3>
+            <p>Nhập bài tập Luật, IT, Kinh tế</p>
         </div>
         <div class="feature-card" onclick="startPomodoro()">
-            <i class="fas fa-hourglass-half"></i>
+            <i class="fas fa-stopwatch"></i>
             <h3>Pomodoro Timer</h3>
             <p>Tập trung 25 phút để tăng GPA</p>
         </div>
         <div class="feature-card" onclick="openMajorModal()">
             <i class="fas fa-graduation-cap"></i>
-            <h3>Chế Độ Giả Lập</h3>
-            <p>Chọn ngành để nhận task riêng biệt</p>
+            <h3>Chế độ Giả lập</h3>
+            <p>Chọn ngành để nhận nhiệm vụ</p>
         </div>
     </div>
 
-    <div id="task-display-area" class="task-list" style="margin-
+    <div id="task-area" class="task-list-area" style="display: none;">
+        <h3><i class="fas fa-book"></i> Danh sách bài tập của bạn</h3>
+        <div id="tasks-container"></div>
+    </div>
+</div>
+
+<div id="major-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>🎓 Chọn Chuyên Ngành Học</h3>
+        <button class="btn-main" onclick="selectMajor('IT', 'Công nghệ thông tin')">💻 Công nghệ thông tin</button>
+        <button class="btn-main" style="background: #e67e22;" onclick="selectMajor('Law', 'Ngành Luật học')">⚖️ Ngành Luật học</button>
+        <button class="btn-main" style="background: #27ae60;" onclick="selectMajor('Biz', 'Kinh tế & Quản trị')">📈 Kinh tế & Quản trị</button>
+    </div>
+</div>
+
+<div id="task-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>📝 Thêm nhiệm vụ học tập</h3>
+        <input type="text" id="task-name" placeholder="Ví dụ: Làm bài tập C PRF192...">
+        <button class="btn-main" onclick="addTask()">Xác nhận thêm</button>
+        <button onclick="closeModals()" style="background:none; border:none; margin-top:10px; cursor:pointer;">Hủy bỏ</button>
+    </div>
+</div>
+
+<div id="notify" class="notification"></div>
+
+<script>
+    // Quản lý trạng thái
+    let studentState = {
+        major: localStorage.getItem('major') || null,
+        gpa: parseFloat(localStorage.getItem('gpa')) || 3.92,
+        tasks: JSON.parse(localStorage.getItem('tasks')) || []
+    };
+
+    // Hàm điều khiển nút bấm
+    function openMajorModal() { document.getElementById('major-modal').classList.add('active'); }
+    function openTaskModal() { document.getElementById('task-modal').classList.add('active'); }
+    function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
+
+    function selectMajor(id, name) {
+        studentState.major = name;
+        localStorage.setItem('major', name);
+        updateHUD();
+        closeModals();
+        showNotify("Chào mừng sinh viên ngành " + name + "!");
+    }
+
+    function addTask() {
+        let val = document.getElementById('task-name').value;
+        if(val) {
+            studentState.tasks.push({ text: val, status: false });
+            localStorage.setItem('tasks', JSON.stringify(studentState.tasks));
+            document.getElementById('task-name').value = "";
+            render();
+            closeModals();
+            showNotify("Đã thêm nhiệm vụ mới!");
+        }
+    }
+
+    function completeTask(idx) {
+        if(!studentState.tasks[idx].status) {
+            studentState.tasks[idx].status = true;
+            studentState.gpa = Math.min(4.0, studentState.gpa + 0.01);
+            localStorage.setItem('gpa', studentState.gpa);
+            localStorage.setItem('tasks', JSON.stringify(studentState.tasks));
+            updateHUD();
+            render();
+            showNotify("Hoàn thành! GPA tăng lên " + studentState.gpa.toFixed(2));
+        }
+    }
+
+    function startPomodoro() {
+        showNotify("Bắt đầu tập trung... GPA sẽ tăng sau 3 giây (Demo)");
+        setTimeout(() => {
+            studentState.gpa = Math.min(4.0, studentState.gpa + 0.05);
+            localStorage.setItem('gpa', studentState.gpa);
+            updateHUD();
+            showNotify("Chúc mừng! GPA hiện tại: " + studentState.gpa.toFixed(2));
+        }, 3000);
+    }
+
+    function render() {
+        let container = document.getElementById('tasks-container');
+        let area = document.getElementById('task-area');
+        if(studentState.tasks.length > 0) {
+            area.style.display = 'block';
+            container.innerHTML = studentState.tasks.map((t, i) => `
+                <div class="task-item">
+                    <input type="checkbox" onchange="completeTask(${i})" ${t.status ? 'checked disabled' : ''}>
+                    <span style="margin-left: 15px; ${t.status ? 'text-decoration: line-through; opacity: 0.5;' : ''}">${t.text}</span>
+                </div>
+            `).join('');
+        }
+    }
+
+    function updateHUD() {
+        document.getElementById('hud-major').innerText = studentState.major || "Chưa chọn";
+        document.getElementById('hud-gpa').innerText = studentState.gpa.toFixed(2);
+    }
+
+    function showNotify(msg) {
+        let n = document.getElementById('notify');
+        n.innerText = msg; n.style.display = 'block';
+        setTimeout(() => { n.style.display = 'none'; }, 3000);
+    }
+
+    window.onload = () => { updateHUD(); render(); };
+</script>
+</body>
+</html>
